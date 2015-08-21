@@ -7,6 +7,7 @@
 \usepackage[square,numbers]{natbib}
 \usepackage[brazil]{babel}   
 \usepackage{pdfpages}
+\usepackage{pgfgantt}
 %\usepackage[latin1]{inputenc}  
 \usepackage[utf8]{inputenc}  
 % UTF-8 encoding is recommended by ShareLaTex
@@ -21,7 +22,7 @@
 \includepdf[pages=-]{CAPA.pdf}
 
 \begin{resumo}
-Manter sistemas legados é uma atividade complexa e custosa para muitas empresas. Uma proposta recente para esse problema é a Modernização Dirigida à Arquitetura (\textit{Architecture-Driven Modernization} - ADM), proposta pela OMG (\textit{Object Management Group}). A ADM consiste em um conjunto de princípios e metamodelos padrões que apoiam a modernização de sistemas utilizando modelos. O \textit{Knowledge Discovery Metamodel} (KDM) é o principal metamodelo da ADM, podendo representar diversos artefatos de um sistema, como código-fonte, arquitetura, interface de usuário, arquivos de configuração e processos de negócio. Embora a ADM e o KDM foram criados para auxiliar todo o processo de modernização, observa-se atualmente carência de abordagens que fornecem apoio adequado a todo o processo de modernização arquitetural; a maior parte se concentra em partes isoladas desse processo. Além disso, geralmente atividades de modernização são conduzidas sem uma clara especificação do problema existente e da solução almejada, assim, modernizadores podem ignorar ou até mesmo esquivar de problemas que precisam ser solucionados. Neste projeto de pós-doutorado, o objetivo é o desenvolvimento de uma abordagem de modernização arquitetural, completa e automática, que permita visualizar o impacto positivo e negativo que determinado conjunto de transformação tem no sistema, antes de efetivamente conduzir o processo. Assim, o engenheiro poderá analisar o cenário de modernização antes de efetivamente realizar a modernização do sistema por intermédio de apoio de representações visuais.
+Manter sistemas legados é uma atividade complexa e custosa para muitas empresas. Uma proposta recente para esse problema é a Modernização Dirigida à Arquitetura (\textit{Architecture-Driven Modernization} - ADM), proposta pela OMG (\textit{Object Management Group}). A ADM consiste em um conjunto de princípios e metamodelos padrões que apoiam a modernização de sistemas utilizando modelos. O \textit{Knowledge Discovery Metamodel} (KDM) é o principal metamodelo da ADM, podendo representar diversos artefatos de um sistema, como código-fonte, arquitetura, interface de usuário, arquivos de configuração e processos de negócio. Embora a ADM e o KDM tenha sido criados para auxiliar o ciclo completo do processo de modernização, observa-se atualmente carência de abordagens que fornecem apoio a partes específicas deste ciclo, fato que indica foco em partes isoladas no lugar do processo como um todo. Além disso, geralmente atividades de modernização são conduzidas sem uma clara especificação do problema existente e da solução almejada. Isto prejudica a análise de impacto da modernização, além de inviabilizar a comparação entre diferentes opções de modernização. Este projeto de pós-doutorado tem o objetivo de propor e implementar uma abordagem de modernização arquitetural, com abrangência de todo o ciclo de modernização, automática e que permita a análise e comparação entre possíveis conjuntos de transformações a serem adotados antes da sua execução. Assim, o engenheiro poderá analisar o cenário de modernização antes de efetivamente realizar a modernização do sistema por intermédio de apoio de representações visuais.
 \end{resumo}
 
 \section{Introdução}
@@ -122,7 +123,11 @@ Na Figura~\ref{fig:kdm_structureExample} é descrita uma possível arquitetura a
 
 Como salientado anteriormente o KDM é um metamodelo que pode ser utilizado para definir desde representações especificadas de um sistema (elementos estruturais e comportamentais de código-fonte) até representações abstratas de um sistema (abstrações arquiteturais, regras de negócio, banco de dados, etc). No entanto, até o momento, existe uma carência de padronizações para auxiliar a definir como visualizar todas as representações do metamodelo KDM, ou seja, como representar visualmente todas as camadas do metamodelo KDM. Dessa forma, usualmente os desenvolvedores precisam que criar suas próprias soluções ferramentais e determinar o que, e como deverá ser visualizado no metamodelo do KDM. Como resultado, tais ferramentas tendem a diminuir a interoperabilidade e a coerência durante a visualização e apresentação de informações para os usuários dessas ferramentas. Uma definição adequada para ``visualização'' no contexto da ADM e KDM é a seguinte: ``Visualização é o processo para representar um determinado sistema como um conjunto de imagens para auxiliar na compreensão de como o sistema está implementado, com o intuito de identificar falhas e erros de projeto''~\cite{ADM:OMG}.
 
-A visualização é um importante meio de compreensão e é fundamental para apoiar a construção de um modelo mental ou uma imagem mental a respeito de alguma representação visual~\cite{spence2014information}. Visualizar é uma atividade cognitiva, apoiada por representações visuais externas através das quais se constrói uma representação mental interna do cenário visual observado~\cite{spence2014information, ware2012information}. No processo de visualização, dados são transformados em imagem. A imagem, por sua vez, é interpretada pelo ser humano. A interpretação de uma imagem pode conduzir à descoberta de informação a partir do que foi codificado graficamente. Isto fecha o ciclo da visualização que tem o objetivo de permitir que informação relevante seja obtida a partir de um conjunto de dados~\cite{source_miner_glauco}. No contexto deste projeto, o conjunto de dados está relacionado à modernização arquitetural e o modelo mental construído a partir das representações visuais disponibilizadas teriam o objetivo de tornar mais efetiva a análise de cenários de modernização arquitetural e consequentemente decisões mais fundamentadas nestes cenários. 
+A visualização é um importante meio de compreensão e é fundamental para apoiar a construção de um modelo mental ou uma imagem mental a respeito de alguma representação visual~\cite{spence2014information}. Visualizar é uma atividade cognitiva, apoiada por representações visuais externas através das quais se constrói uma representação mental interna do cenário visual observado~\cite{spence2014information, ware2012information}. No processo de visualização, dados são transformados em imagem. A imagem, por sua vez, é interpretada pelo ser humano. A interpretação de uma imagem pode conduzir à descoberta de informação a partir do que foi codificado graficamente. Isto fecha o ciclo da visualização que tem o objetivo de permitir que informação relevante seja obtida a partir de um conjunto de dados~\cite{source_miner_glauco}. 
+
+Uma visão é uma representação visual de um conjunto de dados. A análise de conjuntos de dados complexos tipicamente requer múltiplas visões, cada uma revelando um aspecto diferente dos dados sob análise~\cite{Boukhelifa_2003}. Este é o caso em engenharia de software, pois uma única visão não necessariamente apoiará a compreensão efetiva dos dados nela representados~\cite{Storey_2006}. Múltiplas visões incentivam a construção de conhecimento mais aprofundado a respeito dos dados analisados e evitam interpretações distorcidas que poderiam emergir de uma única visão~\cite{Ainsworth_1999}. A Figura XX apresenta uma adaptação do modelo Card ~\cite{source_miner_glauco} para a obtenção de um modelo de referência para visualização de informações baseada em múltiplas visões. Múltiplas visões devem ser concebidas de forma consistente para que seja viável a coordenação e integração entre elas. Visões (e formas visuais) devem ser complementares entre si. Um subconjunto de visões deve ser selecionado para uso coordenado durante execução de uma determinada atividade de análise de dados~\cite{WangBaldonado_2000}. A exploração interativa das visões deve ocorrer para que sejam descobertas informações e relacionamentos que se fossem avaliados da forma tradicional permaneceriam ocultos. Um exemplo de ambiente que aplica estes conceitos é o SourceMiner que é um ambiente interativo baseado em múltiplas visões~\cite{source_miner_glauco}. 
+
+No contexto deste projeto, o conjunto de dados está relacionado à modernização arquitetural e o modelo mental construído a partir das representações de um ambiente interativo baseado em múltiplas visões teria o objetivo de tornar mais efetiva a análise de cenários de modernização arquitetural e consequentemente decisões mais fundamentadas nestes cenários. 
 
 Neste contexto, pode-se argumentar que a definição de uma padronização de visualização de software para a ADM e KDM iria beneficiar os modernizadores de software pois aumentaria a interoperabilidade e a coerência durante a visualização e apresentação de informações de um determinado sistema. Além disso, essa padronização poderia também auxiliar modernizadores a visualizar falhas e erros  de forma dinâmica antes da aplicação de refatorações em sistemas que estão em conformidade ao metamodelo KDM. É importante destacar que sem uma forma padronizada para visualizar todas as visões conceituais de um sistema representado utilizando o metamodelo KDM, modernizadores podem ignorar ou até mesmo esquivar de problemas que precisam ser solucionados nesses sistemas. 
 
@@ -174,29 +179,105 @@ Vale ressaltar que os principais desafios de pesquisa diante do projeto aqui apr
 
 \subsection{Plano de Trabalho e Cronograma}
 
-Nesta seção, são listadas as principais atividades previstas para a condução deste trabalho. Na Tabela~\ref{tab:cronograma} é apresentado o cronograma para essas atividades, sendo que a primeira coluna da tabela refere-se às atividades enumeradas a seguir:
+Nesta seção, são listadas as principais atividades previstas para a condução deste trabalho. Na Figura~6 é apresentado o cronograma para essas atividades. Note que o cronograma é dividido em três principais etapas, as quais são comentadas a seguir:
 
 \begin{enumerate}
+\item Etapa 1: Obter conhecimento para a condução do projeto;
+    
+    \begin{enumerate}
     \item Pesquisa bibliográfica;
     \item Revisão ou mapeamento sistemático;
     \item Análise de técnicas de visualização;
+    \end{enumerate}
+
+\item Etapa 2: Desenvolvimento do projeto proposto e inicial da avaliação;
+
+    \begin{enumerate}
     \item Desenvolvimento da linguagem específica de domínio denominada ``Requisitos Arquiteturais de Qualidade''
     \item Proposição de um metamodelo para a padronização de técnicas de visualização;
     \item Elaborar transformações que serão aplicadas nos sistemas legado;
     \item Desenvolvimento de uma ferramenta para dar suporte ao metamodelo de visualização;
     \item Estudo de caso da abordagem proposta;
+    \end{enumerate}
+    
+\item Etapa 3: Avaliação e Investigação da aplicação da abordagem;
+
+    \begin{enumerate}
     \item Avaliação experimental da abordagem proposta;
-    \item Investigação de cenários práticos de aplicação da abordagem proposta;
-    \item Publicações.
+    \item Investigação de cenários práticos de aplicação da abordagem proposta.
+    \end{enumerate}
+
 \end{enumerate}
 
-\begin{table}[h]
- \centering
- \includegraphics[scale=1]{tabela_pos_doc_f.pdf}
- \caption{Cronograma de atividades previstas para o projeto.\label{tab:cronograma}}
-\end{table}
+\begin{figure}[ftbp]
+\begin{center}
 
-O projeto está previsto para 2 anos, conforme ilustra a Tabela~\ref{tab:cronograma}. As atividades 3 e 4 serão realizadas inicialmente em paralelo, pois a ferramenta será implementada à medica que as estratégias são definidas. Dessa forma, o \textit{feedback} da implementação pode contribuir para o refinamento e evolução da abordagem.
+\begin{ganttchart}[y unit title=0.5cm,
+y unit chart=0.5cm,
+vgrid,hgrid,
+title label anchor/.style={below=-1.6ex},
+title left shift=.05,
+title right shift=-.05,
+title height=1,
+bar/.style={fill=gray!50},
+incomplete/.style={fill=white},
+progress label text={},
+bar height=0.7,
+group right shift=0,
+group top shift=.6,
+group height=.2]{1}{24}
+\gantttitle{Cronograma de Atividades}{24} \\
+\gantttitle{2016}{12} 
+\gantttitle{2017}{12} \\
+\gantttitle{1-Tri}{3} 
+\gantttitle{2-Tri}{3} 
+\gantttitle{3-Tri}{3} 
+\gantttitle{4-Tri}{3}
+\gantttitle{1-Tri}{3}
+\gantttitle{2-Tri}{3} 
+\gantttitle{3-Tri}{3} 
+\gantttitle{4-Tri}{3} \\ 
+
+%\ganttgroup{Revisão Bibliográfica}{1}{3} \\
+\ganttgroup{Etapa 1}{1}{6} \\
+\ganttbar{Atividade 1}{1}{1} \\
+\ganttbar{Atividade 2}{2}{3} \\
+\ganttmilestone{Publicar}{3} \\
+\ganttbar{Atividade 3}{4}{6} \\
+%\ganttmilestone{Publicar}{6} \\
+\ganttgroup{Etapa 2}{4}{12} \\
+\ganttbar{Atividade 4}{4}{8}\\
+\ganttbar{Atividade 5}{6}{9}\\
+%\ganttmilestone{Publicar}{9} \\
+\ganttbar{Atividade 6}{6}{11}\\
+\ganttbar{Atividade 7}{9}{12}\\
+\ganttbar{Atividade 8}{10}{12}\\
+\ganttmilestone{Publicar}{12} \\
+\ganttgroup{Etapa 3}{13}{24} \\
+\ganttbar{Atividade 9}{13}{21}\\
+\ganttmilestone{Publicar}{21} \\
+\ganttbar{Atividade 10}{22}{23}\\
+\ganttmilestone{Publicar}{23}
+%\ganttlink{elem0}{elem1}
+\ganttlink{elem1}{elem2}
+\ganttlink{elem2}{elem3}
+\ganttlink{elem3}{elem4}
+\ganttlink{elem4}{elem5}
+\ganttlink{elem6}{elem7}
+\ganttlink{elem7}{elem8}
+\ganttlink{elem8}{elem9}
+\ganttlink{elem9}{elem10}
+\ganttlink{elem10}{elem11}
+\ganttlink{elem11}{elem12}
+\ganttlink{elem13}{elem14}
+\ganttlink{elem14}{elem15}
+\ganttlink{elem15}{elem16}
+\end{ganttchart}
+\end{center}
+\caption{Cronograma}
+\end{figure}
+
+O projeto está previsto para 2 anos, conforme ilustra a Figura~6. As atividades 3 e 4 serão realizadas inicialmente em paralelo, pois a ferramenta será implementada à medida que as estratégias são definidas. Dessa forma, o \textit{feedback} da implementação pode contribuir para o refinamento e evolução da abordagem. Após o termino de cada etapa ou de uma macro atividade, artigos serão elaborados como apresentado na Figura~6. 
 Destaca-se que parte das atividades serão desenvolvidas junto às instituições estrangeira e nacionais vinculadas ao projeto. Planeja-se, para isso, realizar dois estágios trimestrais de pesquisa em períodos ainda a definir. 
 
 \subsection{Materiais e Métodos}
@@ -291,8 +372,9 @@ Além dessas publicações, outros artigos estão submetidos ou em fase final de
 
 \section{Colaborações}\label{sec:colaboracoes}
 
-O presente projeto será executado em colaboração com o grupo de engenharia de software da
-Universidade Federal de São Carlos (UFSCAR), Universidade de Salvador (UNIFACS) e o \textit{Institut National de Recherche en Informatique et en Automatique} - INRIA/França. Na UFSCAR o candidato contará com o apoio e suporte do Prof. Dr. Valter Vieira de Camargo\footnote{http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=S819089}, o qual tem grande experiência na área de engenharia de software com ênfase em desenvolvimento de \textit{frameworks} no contexto da programação orientada a aspectos e reuso de software. Na UNIFACS, o candidato irá trabalho juntamente com o Prof. Dr. Glauco de Figueiredo Carneiro\footnote{http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4799340J3} o qual possui grande conhecimento em técnicas de visualização para auxiliar todo o processo de engenharia de software. No INRIA, o candidato irá trabalhar em colaboração com o o pesquisador Nicolas Anquetil\footnote{http://rmod.inria.fr/web/team/nicolas-anquetil}, que tem grande experiência na área de engenharia de software e \textit{model-driven development}.
+O presente projeto será executado em colaboração com o grupo de engenharia de software da Universidade Federal de São Carlos (UFSCAR), Universidade de Salvador (UNIFACS) e o \textit{Institut National de Recherche en Informatique et en Automatique} - INRIA/França. Na UFSCAR o candidato contará com o apoio e suporte do Prof. Dr. Valter Vieira de Camargo\footnote{http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=S819089}, o qual tem grande experiência na área de engenharia de software com ênfase em desenvolvimento de \textit{frameworks} no contexto da programação orientada a aspectos e reuso de software. Na UNIFACS, o candidato irá trabalhar juntamente com o Prof. Dr. Glauco de Figueiredo Carneiro\footnote{http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4799340J3} o qual possui grande conhecimento em técnicas de visualização para auxiliar todo o processo de engenharia de software. No INRIA, o candidato irá trabalhar em colaboração com o o pesquisador Nicolas Anquetil\footnote{http://rmod.inria.fr/web/team/nicolas-anquetil}, que tem grande experiência na área de engenharia de software e \textit{model-driven development}.
+
+
 
 
 \bibliographystyle{unsrt}
